@@ -1,0 +1,9 @@
+Solution bourrin:
+J'ai modifié le code source fourni, de sorte qu'il prenne en paramètre un PID et qu'il chiffre "$1$awesome" avec, et affiche le résultat.
+
+L'idée est de boucler l'exécution du programme du challenge jusqu'à ce qu'on tombe sur le résultat fourni par le programme modifié, et donc qu'on obtienne un shell.
+
+Solutions plus élégante:
+Utiliser exec*, ou python pour utiliser le PID courant +1
+
+Le flag est : -/q2/a9d6e31D
