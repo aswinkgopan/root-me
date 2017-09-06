@@ -39,15 +39,17 @@ def inject(col, table, whereClause):
 				if name == '':
 					finished = True
 				else:
-					print(name)
 					l.append(name)
 				break
 			name += chr(char + 1)
+			sys.stdout.write(chr(char+1))
 			sys.stdout.flush()
 			pos += 1
+		sys.stdout.write('\n')
+		sys.stdout.flush()
 		offset += 1
 	return l
-	
+
 
 print("\n# Listing tables #")
 
