@@ -24,7 +24,8 @@ WHERE table_name<>'CHARACTER_SETS' AND table_name<>'COLLATIONS' AND table_name<>
 7: membres
 
 table flag:
-1 colonne dont le nom est "flag"
-Le flag fait 30 caractères:
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-flag is : moaz63rvxu
+1 colonne dont le nom est "flag", contient une ligne:
+flag is : moaz63rvxuHlq8tvs7hw
+
+table membres:
+4 colonnes: username,password,email,date
