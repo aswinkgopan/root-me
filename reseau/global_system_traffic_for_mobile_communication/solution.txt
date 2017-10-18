@@ -1,0 +1,3 @@
+Prendre le hexdump du packet de taille 126 grâce à Wireshark
+Convertir grâce au site smstools3.kekekasvi.com/topic.php?id=288
+le flag est asdpokv4e57q7a2
